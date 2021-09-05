@@ -1,0 +1,16 @@
+spring:
+  redis:
+    host: 119.29.185.91
+    password: lu19991024
+    port: 5269
+  main:
+    allow-bean-definition-overriding: true
+  session:
+    store-type: redis
+  servlet:
+    multipart:
+      max-file-size: 4MB
+      max-request-size: 100MB
+
+server:
+  port: 8658
