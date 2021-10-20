@@ -48,6 +48,7 @@ public class CatIdentifyController {
         UserSession userSessionValue = HttpHelper.getUserSessionValue(request);
         String s = UUID.randomUUID().toString();
         userSessionValue.setNowTaskUUID(s);
+        userSessionValue.setTaskNum(userSessionValue.getTaskNum() + 1);
         TaskPool.execute(()->{
             // file -> MQ
             try {
@@ -63,5 +64,14 @@ public class CatIdentifyController {
         });
 
         return RtMessage.OK(s);
+    }
+
+    @GetMapping("/detectClass")
+    public RtMessage<String> getDetectClass(@RequestParam(value = "uuid") String uuid) throws Exception {
+        String detectClass = redisDao.getDetectClass(uuid);
+        if (detectClass == null) {
+            return RtMessage.ERROR(400, "no record", "");
+        }
+        return RtMessage.OK(detectClass);
     }
 }

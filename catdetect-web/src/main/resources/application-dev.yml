@@ -17,3 +17,7 @@ spring:
 
 server:
   port: 8658
+  ssl:
+    key-store: classpath:ssl/scaucatlife.xyz.jks
+    key-store-type: JKS
+    key-store-password: ST7E-j.uCb6W_Jr

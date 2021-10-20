@@ -4,6 +4,7 @@ import com.scaudachuang.catlife.commons.model.TopHotDetection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -22,6 +23,9 @@ public class RedisDao {
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     public Set<TopHotDetection> getAllTopHotZSet() {
         Set<Object> range = redisTemplate.opsForZSet().range(TopHotDetection.redisZSetKey, 0, -1);
@@ -45,5 +49,11 @@ public class RedisDao {
         Long rank = redisTemplate.opsForZSet().rank(TopHotDetection.redisZSetKey, val);
         if (rank == null) return -1;
         return rank.intValue();
+    }
+
+    public String getDetectClass(String uuid) {
+        if (uuid == null || uuid.length() <= 15)
+            return null;
+        return stringRedisTemplate.opsForValue().get(uuid);
     }
 }
